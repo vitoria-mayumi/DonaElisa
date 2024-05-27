@@ -11,7 +11,16 @@ const router = createRouter({
         {
             path: '/about',
             component: () => import('../views/About.vue')
-        }
+        },
+        {
+            path: '/pratos',
+            component: () => import('../views/Pratos.vue')
+        },
+        {
+            path: '/form',
+            name: 'Form',
+            component: () => import('../components/Pratos_form.vue')
+          }
     ]
 })
 
