@@ -158,13 +158,13 @@ aside {
             }
 
             &.router-link-exact-active {
-                border-right: 5px solid #940000;
+                border-right: 5px solid #940000cc;
             }
         }
     }
 
     &.is-expanded {
-        width: 20rem;
+        width: 18rem;
 
         .logo-small{
             display: none;
@@ -202,7 +202,7 @@ aside {
             }
         }
     }
-    
+
     @media (max-width: 768px) {
         position: fixed;
         z-index: 99;
