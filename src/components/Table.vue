@@ -1,24 +1,38 @@
 <template>
-    <div class="table-container">
-      <table class="table">
-        <thead>
-          <tr>
-            <th v-for="(column, index) in columns" :key="index" @click="sortColumn(column)">
-              {{ column.label }}
-              <span v-if="sortedColumn === column.key">
-                {{ sortOrder === 'asc' ? '▲' : '▼' }}
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(row, index) in paginatedData" :key="index">
-            <td v-for="(column, index) in columns" :key="index">
-              {{ row[column.key] }}
-            </td>
-          </tr>
-        </tbody>
-      </table>
+  <div class="table-container">
+    <div class="actions">
+      <button @click="handleDeleteAction">
+        <span class="material-icons">delete</span>
+      </button>
+      <button @click="handleEditAction">
+        <span class="material-icons">edit</span>
+      </button>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>
+            <input type="checkbox" @change="toggleSelectAll" :checked="isAllSelected"/>
+          </th>
+          <th v-for="(column, index) in columns" :key="index" @click="sortColumn(column)">
+            {{ column.label }}
+            <span v-if="sortedColumn === column.key">
+              {{ sortOrder === 'asc' ? '▲' : '▼' }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(row, index) in paginatedData" :key="index">
+          <td>
+            <input type="checkbox" v-model="selectedRows" :value="row"/>
+          </td>
+          <td v-for="(column, index) in columns" :key="index">
+            {{ row[column.key] }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
       <div class="pagination">
         <button @click="prevPage" :disabled="currentPage === 1">
           <span class="material-icons">chevron_left</span>
@@ -28,7 +42,15 @@
           <span class="material-icons">chevron_right</span>
         </button>
       </div>
-    </div>
+      <transition name="fade">
+        <div class="notification" v-if="showNotification">
+          <p>{{ notificationMessage }}</p>
+          <button @click="dismissNotification">
+            <span class="material-icons">cancel</span>
+          </button>
+        </div>
+      </transition>
+  </div>
 </template>
 
 <script setup>
@@ -46,6 +68,8 @@ const props = defineProps({
 const currentPage = ref(1);
 const sortedColumn = ref('');
 const sortOrder = ref('asc');
+
+const selectedRows = ref([]);
 
 const sortedData = computed(() => {
   if (!sortedColumn.value) return props.data;
@@ -85,12 +109,82 @@ const prevPage = () => {
     currentPage.value--;
   }
 };
+
+const toggleSelectAll = (event) => {
+  if (event.target.checked) {
+    selectedRows.value = [...selectedRows.value, ...paginatedData.value];
+  } else {
+    selectedRows.value = selectedRows.value.filter(row => !paginatedData.value.includes(row));
+  }
+};
+
+const isAllSelected = computed(() => {
+  return paginatedData.value.length && selectedRows.value.length === paginatedData.value.length;
+});
+
+const hasSelectedRows = computed(() => selectedRows.value.length > 0);
+
+const showNotification = ref(false);
+const notificationMessage = ref('');
+
+const handleDeleteAction = () => {
+  if (!hasSelectedRows.value) {
+    notificationMessage.value = 'Nenhuma linha selecionada. Selecione uma linha para excluir.';
+    showNotification.value = true;
+    setTimeout(() => {
+      showNotification.value = false;
+    }, 5000); 
+    return;
+  }
+  deleteSelectedRows();
+};
+
+const handleEditAction = () => {
+  if (!hasSelectedRows.value) {
+    notificationMessage.value = 'Nenhuma linha selecionada. Selecione uma linha para editar.';
+    showNotification.value = true;
+    setTimeout(() => {
+      showNotification.value = false;
+    }, 5000); 
+    return;
+  }
+  editSelectedRows();
+};
+
+const dismissNotification = () => {
+  showNotification.value = false;
+};
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .table-container {
   width: 100%;
   overflow-x: auto;
+  position: relative;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+
+  margin-bottom: .5rem;
+  button {
+    border: none;
+    background-color: transparent;
+
+    .material-icons {
+      font-size: 1.2rem;
+      color: #5a5a5a;
+      cursor: pointer;
+
+      transition: .2s ease-out;
+    }
+  }
+
+  .material-icons:hover {
+    color: #b5b5b5;
+  }
 }
 
 .table {
@@ -123,10 +217,10 @@ const prevPage = () => {
 }
 
 .pagination {
-  margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  margin-top: 1rem;
   font-size: .8rem;
   color: #5a5a5a;
 }
@@ -145,6 +239,42 @@ const prevPage = () => {
 .pagination button:disabled {
   cursor: not-allowed;
 }
-</style>
 
-  
+.notification {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+
+  background-color: rgba(189, 4, 4, 0.811);
+  color: white;
+
+  padding: 15px;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: .5rem;
+}
+
+.notification p {
+  margin: 0;
+  flex-grow: 1;
+}
+
+.notification button {
+  background-color: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter, .fade-leave-to {
+  opacity: 0;
+}
+</style>
