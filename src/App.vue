@@ -50,6 +50,7 @@
   main {
     flex: 1 1 0;
     padding: 2rem;
+    //margin-left: calc(2rem + 32px);
 
     @media (max-width: 768px) {
       padding-left: 6rem;
