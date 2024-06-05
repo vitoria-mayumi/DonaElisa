@@ -20,7 +20,6 @@
   }
 
   body {
-    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
   }
 
@@ -50,6 +49,8 @@
   main {
     flex: 1 1 0;
     padding: 2rem;
+    max-width: 100%;
+    min-width: 70%;
     //margin-left: calc(2rem + 32px);
 
     @media (max-width: 768px) {

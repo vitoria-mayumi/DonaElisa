@@ -8,48 +8,47 @@
         <span class="material-icons">edit</span>
       </button>
     </div>
-    <table class="table">
-      <thead>
-        <tr>
-          <th>
-            <input type="checkbox" @change="toggleSelectAll" :checked="isAllSelected"/>
-          </th>
-          <th v-for="(column, index) in columns" :key="index" @click="sortColumn(column)">
-            {{ column.label }}
-            <span v-if="sortedColumn === column.key">
-              {{ sortOrder === 'asc' ? '▲' : '▼' }}
-            </span>
-          </th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr v-for="(row, index) in paginatedData" :key="index">
-          <td>
-            <input type="checkbox" v-model="selectedRows" :value="row"/>
-          </td>
-          <td v-for="(column, index) in columns" :key="index">
-            {{ row[column.key] }}
-          </td>
-        </tr>
-      </tbody>
-    </table>
-      <div class="pagination">
-        <button @click="prevPage" :disabled="currentPage === 1">
-          <span class="material-icons">chevron_left</span>
-        </button>
-        <span>página {{ currentPage }} / {{ totalPages }}</span>
-        <button @click="nextPage" :disabled="currentPage === totalPages">
-          <span class="material-icons">chevron_right</span>
+    <div class="table-wrapper">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>
+              <input type="checkbox" @change="toggleSelectAll" :checked="isAllSelected"/>
+            </th>
+            <th v-for="(column, index) in columns" :key="index">
+              {{ column.label }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr v-for="(row, index) in paginatedData" :key="index">
+            <td>
+              <input type="checkbox" v-model="selectedRows" :value="row"/>
+            </td>
+            <td v-for="(column, index) in columns" :key="index">
+              {{ row[column.key] }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="pagination">
+      <button @click="prevPage" :disabled="currentPage === 1">
+        <span class="material-icons">chevron_left</span>
+      </button>
+      <span>página {{ currentPage }} / {{ totalPages }}</span>
+      <button @click="nextPage" :disabled="currentPage === totalPages">
+        <span class="material-icons">chevron_right</span>
+      </button>
+    </div>
+    <transition name="fade">
+      <div class="notification" v-if="showNotification">
+        <p>{{ notificationMessage }}</p>
+        <button @click="dismissNotification">
+          <span class="material-icons">cancel</span>
         </button>
       </div>
-      <transition name="fade">
-        <div class="notification" v-if="showNotification">
-          <p>{{ notificationMessage }}</p>
-          <button @click="dismissNotification">
-            <span class="material-icons">cancel</span>
-          </button>
-        </div>
-      </transition>
+    </transition>
   </div>
 </template>
 
@@ -158,8 +157,7 @@ const dismissNotification = () => {
 
 <style lang="scss" scoped>
 .table-container {
-  width: 100%;
-  overflow-x: auto;
+  
   position: relative;
 }
 
@@ -167,8 +165,8 @@ const dismissNotification = () => {
   display: flex;
   align-items: center;
   gap: .5rem;
-
   margin-bottom: .5rem;
+
   button {
     border: none;
     background-color: transparent;
@@ -177,7 +175,6 @@ const dismissNotification = () => {
       font-size: 1.2rem;
       color: #5a5a5a;
       cursor: pointer;
-
       transition: .2s ease-out;
     }
   }
@@ -187,21 +184,81 @@ const dismissNotification = () => {
   }
 }
 
+.table-wrapper {
+  overflow: auto;
+  border: 1.5px solid #ddd;
+  border-radius: 10px;
+}
+
 .table {
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
-  border: 1.5px solid #ddd;
-  border-radius: 10px;
-  overflow: hidden;
 }
 
 .table th, .table td {
-  padding: 0.5rem;
+  padding: 0.7rem 1rem 0.7rem 0.5rem;
   border-bottom: 1px solid #ddd;
   text-align: left;
   font-size: .9rem;
   color: #5a5a5a;
+  white-space: nowrap;
+}
+
+.table th:first-child, .table td:first-child {
+  width: 50px; 
+}
+
+.table th {
+  background-color: #f4f4f4;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+input[type=checkbox] {
+  position: relative;
+  cursor: pointer;
+}
+
+input[type=checkbox]:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 0;
+  left: 0;
+  background-color: #f4f4f4;
+  border: 1px solid #b5b5b5;
+  border-radius: 3px;
+}
+
+input[type=checkbox]:checked:before {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  top: 0;
+  left: 0;
+  background-color: #940000;
+}
+
+input[type=checkbox]:checked:after {
+  content: "";
+  display: block;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+  position: absolute;
+  top: 2px;
+  left: 6px;
 }
 
 .table th {
@@ -244,14 +301,11 @@ const dismissNotification = () => {
   position: fixed;
   bottom: 20px;
   right: 20px;
-
   background-color: rgba(189, 4, 4, 0.811);
   color: white;
-
   padding: 15px;
   border-radius: 5px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-
   display: flex;
   justify-content: space-between;
   align-items: center;

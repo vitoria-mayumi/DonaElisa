@@ -1,6 +1,6 @@
 <template>
     <main class="home-page">
-      <h1>Cadastro de Categorias de Pratos</h1>
+      <h1>Categorias de Pratos</h1>
       <SearchBar :searchTerm="searchTerm" @update:searchTerm="updateSearchTerm" />
       <TableComponent :data="filteredData" :columns="tableColumns" :rowsPerPage="10" />
       <div class="add-section">
@@ -66,7 +66,7 @@
   
   .add-section {
     display: flex;
-    margin-top: 1rem;
+    margin-top: .1rem;
   }
   </style>
   
