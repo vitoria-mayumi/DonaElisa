@@ -30,7 +30,7 @@
                     <span class="text">Pratos</span>
                 </router-link>
                 <button class="submenu-toggle" @click="ToggleSubmenu" :class="`${ is_submenu_open && 'rotated' }`">
-                    <span class="material-icons">expand_more</span>
+                    <span class="material-icons">chevron_left</span>
                 </button>
             </div>
             
@@ -211,7 +211,7 @@ aside {
                 }
 
                 &.rotated .material-icons {
-                    transform: rotate(-180deg);
+                    transform: rotate(-90deg);
                 }
             }
 

@@ -26,7 +26,8 @@
               <input type="checkbox" v-model="selectedRows" :value="row"/>
             </td>
             <td v-for="(column, index) in columns" :key="index">
-              {{ row[column.key] }}
+              <img v-if="column.type === 'image'" :src="row[column.key]" alt="Image" />
+              <span v-else>{{ row[column.key] }}</span>
             </td>
           </tr>
         </tbody>
@@ -203,6 +204,12 @@ const dismissNotification = () => {
   font-size: .9rem;
   color: #5a5a5a;
   white-space: nowrap;
+
+  img {
+    max-width: 40px;
+    height: auto;
+    border-radius: 3px;
+  }
 }
 
 .table th:first-child, .table td:first-child {
@@ -215,6 +222,10 @@ const dismissNotification = () => {
 
 .table tr:last-child td {
   border-bottom: none;
+}
+
+.table td:nth-child(2n) {
+  padding: 0 0 0 1rem;
 }
 
 input[type=checkbox] {
