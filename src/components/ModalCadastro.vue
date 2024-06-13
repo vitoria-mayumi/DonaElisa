@@ -1,44 +1,52 @@
 <template>
   <div v-if="isVisible" class="modal-overlay">
     <div class="modal">
-      <h2>Formulário de Contato</h2>
       <form @submit.prevent="submitForm">
-        <div class="form-group">
-          <label for="name">Nome:</label>
-          <input type="text" id="name" v-model="form.name" required />
+        <div v-for="(field, index) in fields" :key="index" class="form-group">
+          <label :for="field.name">{{ field.label }}</label>
+          <component 
+            :is="field.type === 'textarea' ? 'textarea' : 'input'"
+            :type="field.type !== 'textarea' ? field.type : undefined"
+            :id="field.name"
+            v-model="form[field.name]"
+            :required="field.required"
+            class="form-control"
+          />
         </div>
-        <div class="form-group">
-          <label for="email">Email:</label>
-          <input type="email" id="email" v-model="form.email" required />
+        <div class="button-group">
+          <button type="submit" class="btn btn-primary">Enviar</button>
+          <button type="button" @click="closeModal" class="btn btn-secondary">Fechar</button>
         </div>
-        <div class="form-group">
-          <label for="message">Mensagem:</label>
-          <textarea id="message" v-model="form.message" required></textarea>
-        </div>
-        <button type="submit">Enviar</button>
-        <button type="button" @click="closeModal">Fechar</button>
       </form>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, watch } from 'vue';
 
 const props = defineProps({
   isVisible: {
     type: Boolean,
+    required: true
+  },
+  fields: {
+    type: Array,
     required: true
   }
 });
 
 const emit = defineEmits(['close']);
 
-const form = ref({
-  name: '',
-  email: '',
-  message: ''
-});
+const form = ref({});
+
+watch(() => props.fields, (newFields) => {
+  newFields.forEach(field => {
+    if (!(field.name in form.value)) {
+      form.value[field.name] = '';
+    }
+  });
+}, { immediate: true });
 
 const closeModal = () => {
   emit('close');
@@ -64,18 +72,72 @@ const submitForm = () => {
 }
 
 .modal {
+  display: flex;
   background: white;
   padding: 20px;
   border-radius: 8px;
-  max-width: 500px;
+  max-width: 1000px;
   width: 100%;
+  max-height: 80vh;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: scroll;
 }
 
 .form-group {
   margin-bottom: 15px;
 }
 
-button {
-  margin-right: 10px;
+label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-control {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+textarea.form-control {
+  resize: vertical;
+}
+
+.button-group {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-left: 10px;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btn-secondary:hover {
+  background-color: #565e64;
 }
 </style>

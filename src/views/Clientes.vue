@@ -5,7 +5,7 @@
     <TableComponent :data="filteredData" :columns="tableColumns" :rowsPerPage="10" />
     <div class="add-section">
       <AddButton @click="showModal" />
-      <ModalCadastro :isVisible="isModalVisible" @close="isModalVisible = false" />
+      <ModalCadastro :isVisible="isModalVisible" @close="isModalVisible = false" :fields="currentFields"/>
     </div>
   </main>
 </template>
@@ -18,7 +18,7 @@ import AddButton from '../components/ButtonAdd.vue';
 import ModalCadastro from '../components/ModalCadastro.vue';
 
 const tableData = ref([
-  { codigo: '1', nome: 'Jhon', cpf: '111.222.333-44', telefone: '(11)11111-1111', endereco: 'Rua Um, 1', bairro: 'Saudade', cidade: 'Garça', estado: 'SP'}
+  { codigo: '1', nome: 'Jho', cpf: '111.222.333-44', telefone: '(11)11111-1111', endereco: 'Rua Um, 1', bairro: 'Saudade', cidade: 'Garça', estado: 'SP'}
 ]);
 
 const tableColumns = [
@@ -52,8 +52,22 @@ const filteredData = computed(() => {
 });
 
 const isModalVisible = ref(false);
+const currentFields = ref([]);
+
+const contactFields = [
+  { name: 'name', label: 'Nome*', type: 'text', required: true },
+  { name: 'cpf', label: 'CPF*', type: 'text', required: true },
+  { name: 'telefone', label: 'Telefone*', type: 'text', required: true },
+  { name: 'cep', label: 'CEP', type: 'text', required: true },
+  { name: 'cidade', label: 'Cidade*', type: 'text', required: true },
+  { name: 'estado', label: 'Estado*', type: 'text', required: true },
+  { name: 'bairro', label: 'Bairro*', type: 'text', required: true },
+  { name: 'endereco', label: 'Endereço*', type: 'text', required: true },
+  { name: 'numero', label: 'Número*', type: 'text', required: true }
+];
 
 const showModal = () => {
+  currentFields.value = contactFields;
   isModalVisible.value = true;
 };
 </script>

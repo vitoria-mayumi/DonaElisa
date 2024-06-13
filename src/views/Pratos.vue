@@ -4,16 +4,18 @@
       <SearchBar :searchTerm="searchTerm" @update:searchTerm="updateSearchTerm" />
       <TableComponent :data="filteredData" :columns="tableColumnsWithImage" :rowsPerPage="10" />
       <div class="add-section">
-        <AddButton @add="handleAdd" />
+        <AddButton @click="showModal" />
+        <ModalCadastro :isVisible="isModalVisible" @close="isModalVisible = false" :fields="currentFields"/>
       </div>
     </main>
   </template>
   
-  <script setup>
+<script setup>
   import { ref, computed } from 'vue';
   import TableComponent from '../components/Table.vue';
   import SearchBar from '../components/Searchbar.vue';
   import AddButton from '../components/ButtonAdd.vue';
+  import ModalCadastro from '../components/ModalCadastro.vue';
   
   const tableData = ref([
     { codigo: '1', nome: 'Jho', medida: '11.222.333-4', categoria: '11)11111-111', descricao: ' Um, 1', imagem: 'src/assets/prato.jpg' }
@@ -48,12 +50,22 @@
     );
   });
   
-  const handleAdd = () => {
-    // Implement the logic for adding a new entry
+  const isModalVisible = ref(false);
+  const currentFields = ref([]);
+
+  const contactFields = [
+    { name: 'name', label: 'Nome', type: 'text', required: true },
+    { name: 'categoria', label: 'Categoria', type: 'text', required: true },
+    { name: 'medida', label: 'Medida', type: 'text', required: true }
+  ];
+
+  const showModal = () => {
+    currentFields.value = contactFields;
+    isModalVisible.value = true;
   };
-  </script>
+</script>
   
-  <style lang="scss" scoped>
+<style lang="scss" scoped>
   h1 {
     font-size: 1.5rem;
     color: #940000;
@@ -63,5 +75,5 @@
     display: flex;
     margin-top: .1rem;
   }
-  </style>
+</style>
   
