@@ -5,8 +5,8 @@
     <TableComponent :data="filteredData" :columns="tableColumns" :rowsPerPage="10" />
     <div class="add-section">
       <AddButton @click="showModal" />
-      <ModalCadastro :isVisible="isModalVisible" @close="isModalVisible = false" :fields="currentFields"/>
     </div>
+    <ModalCadastro :isVisible="isModalVisible" @close="isModalVisible = false" :fields="currentFields"/>
   </main>
 </template>
 
@@ -55,15 +55,15 @@ const isModalVisible = ref(false);
 const currentFields = ref([]);
 
 const contactFields = [
-  { name: 'name', label: 'Nome*', type: 'text', required: true },
-  { name: 'cpf', label: 'CPF*', type: 'text', required: true },
-  { name: 'telefone', label: 'Telefone*', type: 'text', required: true },
-  { name: 'cep', label: 'CEP', type: 'text', required: true },
-  { name: 'cidade', label: 'Cidade*', type: 'text', required: true },
-  { name: 'estado', label: 'Estado*', type: 'text', required: true },
-  { name: 'bairro', label: 'Bairro*', type: 'text', required: true },
-  { name: 'endereco', label: 'Endereço*', type: 'text', required: true },
-  { name: 'numero', label: 'Número*', type: 'text', required: true }
+  { name: 'name', label: 'Nome*', type: 'text', required: true, width: '100%', placeholder: '' },
+  { name: 'cpf', label: 'CPF*', type: 'text', required: true, width: '30%', placeholder: '000.000.000-00' },
+  { name: 'telefone', label: 'Telefone*', type: 'text', required: true, width: '50%', placeholder: '(00)00000-0000' },
+  { name: 'cep', label: 'CEP', type: 'text', required: false, width: '30%', placeholder: '00000-000' },
+  { name: 'cidade', label: 'Cidade*', type: 'text', required: true, width: '30%', placeholder: '' },
+  { name: 'estado', label: 'Estado*', type: 'text', required: true, width: '30%', placeholder: '' },
+  { name: 'bairro', label: 'Bairro*', type: 'text', required: true, width: '100%', placeholder: '' },
+  { name: 'endereco', label: 'Endereço*', type: 'text', required: true, width: '50%', placeholder: '' },
+  { name: 'numero', label: 'Número*', type: 'text', required: true, width: '10%', placeholder: '' }
 ];
 
 const showModal = () => {

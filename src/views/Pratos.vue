@@ -54,9 +54,11 @@
   const currentFields = ref([]);
 
   const contactFields = [
-    { name: 'name', label: 'Nome', type: 'text', required: true },
-    { name: 'categoria', label: 'Categoria', type: 'text', required: true },
-    { name: 'medida', label: 'Medida', type: 'text', required: true }
+    { name: 'name', label: 'Nome do Prato*', type: 'text', required: true, width: '100%' },
+    { name: 'descricao', label: 'Descrição', type: 'text', required: false, width: '100%' },
+    { name: 'categoria', label: 'Categoria*', type: 'text', required: true, width: '40%' },
+    { name: 'medida', label: 'Unidade de Medida*', type: 'text', required: true, width: '40%' },
+    { name: 'imagem', label: 'Imagem', type: 'text', required: true, width: '100%' }
   ];
 
   const showModal = () => {
