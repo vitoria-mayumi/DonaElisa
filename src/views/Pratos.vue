@@ -56,9 +56,9 @@
   const contactFields = [
     { name: 'name', label: 'Nome do Prato*', type: 'text', required: true, width: '100%' },
     { name: 'descricao', label: 'Descrição', type: 'text', required: false, width: '100%' },
-    { name: 'categoria', label: 'Categoria*', type: 'text', required: true, width: '40%' },
-    { name: 'medida', label: 'Unidade de Medida*', type: 'text', required: true, width: '40%' },
-    { name: 'imagem', label: 'Imagem', type: 'text', required: true, width: '100%' }
+    { name: 'categoria', label: 'Categoria*', type: 'combobox', required: true, width: '40%', options: ['Male', 'Female', 'Other'] },
+    { name: 'medida', label: 'Unidade de Medida*', type: 'combobox', required: true, width: '40%', options: ['Male', 'Female', 'Other'] },
+    { name: 'imagem', label: 'Imagem', type: 'file', required: true, width: '100%' }
   ];
 
   const showModal = () => {

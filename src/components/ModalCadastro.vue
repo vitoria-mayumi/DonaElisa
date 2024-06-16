@@ -16,34 +16,43 @@
             class="form-group"
             :style="{ flex: `1 1 ${field.width}` }"
           >
-          <label :for="field.name">{{ field.label }}</label>
-            <component
-              v-if="field.type === 'textarea'" is="textarea"
+            <label :for="field.name">{{ field.label }}</label>
+            <textarea
+              v-if="field.type === 'textarea'"
               :id="field.name"
               v-model="form[field.name]"
               :required="field.required"
               :placeholder="field.placeholder"
               class="form-control"
             />
-            <component
+            <select
               v-else-if="field.type === 'combobox'"
-              :is="select"
               :id="field.name"
               v-model="form[field.name]"
               :required="field.required"
               class="form-control"
             >
               <option v-for="option in field.options" :key="option" :value="option">{{ option }}</option>
-            </component>
-            <component
+            </select>
+            <div v-else-if="field.type === 'file'" class="file-input-wrapper">
+              <input
+                type="file"
+                :id="field.name"
+                @change="handleFileUpload($event, field.name)"
+                :required="field.required"
+                class="form-control file-input"
+              />
+              <span class="material-icons file-icon">attach_file</span>
+            </div>
+            <input
               v-else
-              :is="input"
               :type="field.type"
               :id="field.name"
               v-model="form[field.name]"
               :required="field.required"
               :placeholder="field.placeholder"
               class="form-control"
+              @input="applyMask(field.name, $event)"
             />
           </div>
         </div>
@@ -92,6 +101,47 @@ const closeModal = () => {
 const submitForm = () => {
   console.log('Form data:', form.value);
   closeModal();
+};
+
+const applyMask = (fieldName, event) => {
+  let value = event.target.value;
+
+  switch (fieldName) {
+    case 'cep':
+      value = value.replace(/\D/g, '').slice(0, 8);
+      if (value.length > 5) {
+        value = value.slice(0, 5) + '-' + value.slice(5);
+      }
+      break;
+    case 'cpf':
+      value = value.replace(/\D/g, '').slice(0, 11);
+      if (value.length > 9) {
+        value = value.slice(0, 3) + '.' + value.slice(3, 6) + '.' + value.slice(6, 9) + '-' + value.slice(9, 11);
+      } else if (value.length > 6) {
+        value = value.slice(0, 3) + '.' + value.slice(3, 6) + '.' + value.slice(6);
+      } else if (value.length > 3) {
+        value = value.slice(0, 3) + '.' + value.slice(3);
+      }
+      break;
+    case 'telefone':
+      value = value.replace(/\D/g, '').slice(0, 11);
+      if (value.length > 10) {
+        value = '(' + value.slice(0, 2) + ')' + value.slice(2, 7) + '-' + value.slice(7);
+      } else if (value.length > 6) {
+        value = '(' + value.slice(0, 2) + ')' + value.slice(2, 6) + '-' + value.slice(6);
+      } else if (value.length > 2) {
+        value = '(' + value.slice(0, 2) + ')' + value.slice(2);
+      }
+      break;
+  }
+
+  event.target.value = value;
+  form.value[fieldName] = value;
+};
+
+const handleFileUpload = (event, fieldName) => {
+  const file = event.target.files[0];
+  form.value[fieldName] = file;
 };
 </script>
 
@@ -150,6 +200,27 @@ label {
 
 textarea.form-control {
   resize: vertical;
+}
+
+.file-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.file-input {
+  padding-right: 40px; /* Space for the icon */
+}
+
+.file-icon {
+  position: absolute;
+  right: 10px;
+  font-size: 24px;
+  color: #ccc;
+}
+
+.file-input-wrapper .file-input:focus + .file-icon {
+  color: #383838;
 }
 
 .btn-fechar {
