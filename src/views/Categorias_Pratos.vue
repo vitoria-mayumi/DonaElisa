@@ -1,10 +1,11 @@
 <template>
     <main class="home-page">
-      <h1>Cadastro de Categorias de Pratos</h1>
+      <h1>Categorias de Pratos</h1>
       <SearchBar :searchTerm="searchTerm" @update:searchTerm="updateSearchTerm" />
       <TableComponent :data="filteredData" :columns="tableColumns" :rowsPerPage="10" />
       <div class="add-section">
-        <AddButton @add="handleAdd" />
+        <AddButton @click="showModal" />
+        <ModalCadastro :isVisible="isModalVisible" @close="isModalVisible = false" :fields="currentFields"/>
       </div>
     </main>
   </template>
@@ -14,23 +15,11 @@
   import TableComponent from '../components/Table.vue';
   import SearchBar from '../components/Searchbar.vue';
   import AddButton from '../components/ButtonAdd.vue';
+  import ModalCadastro from '../components/ModalCadastro.vue';
   
   const tableData = ref([
     { codigo: '1', nome: 'Jho', descricao: ' Um, 1' },
-    { codigo: '2', nome: 'Mar', descricao: 'a Um, 1' },
-    { codigo: '3', nome: 'Ana', descricao: 'Um, 1' },
-    { codigo: '4', nome: 'Jho', descricao: ' Um, 1' },
-    { codigo: '5', nome: 'Mar', descricao: 'a Um, 1' },
-    { codigo: '6', nome: 'Ana', descricao: 'Um, 1' },
-    { codigo: '7', nome: 'Jho', descricao: ' Um, 1' },
-    { codigo: '8', nome: 'Mar', descricao: 'a Um, 1' },
-    { codigo: '9', nome: 'Ana', descricao: 'Um, 1' },
-    { codigo: '10', nome: 'Jh', descricao: 'a Um, 1' },
-    { codigo: '11', nome: 'Ma', descricao: ' Um, 1' },
-    { codigo: '12', nome: 'An', descricao: ' Um, 1' },
-    { codigo: '13', nome: 'Jh', descricao: 'a Um, 1' },
-    { codigo: '14', nome: 'Ma', descricao: ' Um, 1' },
-    { codigo: '15', nome: 'An', descricao: ' Um, 1' }
+    { codigo: '2', nome: 'Mar', descricao: 'a Um, 1' }
   ]);
 
  const tableColumns = [
@@ -53,8 +42,17 @@
     );
   });
   
-  const handleAdd = () => {
-    // Implement the logic for adding a new entry
+  const isModalVisible = ref(false);
+  const currentFields = ref([]);
+
+  const contactFields = [
+    { name: 'name', label: 'Nome da Categoria*', type: 'text', required: true, width: '100%' },
+    { name: 'descricao', label: 'Descrição', type: 'text', required: false, width: '100%' }
+  ];
+
+  const showModal = () => {
+    currentFields.value = contactFields;
+    isModalVisible.value = true;
   };
   </script>
   
@@ -66,7 +64,7 @@
   
   .add-section {
     display: flex;
-    margin-top: 1rem;
+    margin-top: .1rem;
   }
   </style>
   

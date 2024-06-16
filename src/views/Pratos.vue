@@ -1,36 +1,24 @@
 <template>
     <main class="home-page">
-      <h1>Cadastro de Pratos</h1>
+      <h1>Pratos</h1>
       <SearchBar :searchTerm="searchTerm" @update:searchTerm="updateSearchTerm" />
-      <TableComponent :data="filteredData" :columns="tableColumns" :rowsPerPage="10" />
+      <TableComponent :data="filteredData" :columns="tableColumnsWithImage" :rowsPerPage="10" />
       <div class="add-section">
-        <AddButton @add="handleAdd" />
+        <AddButton @click="showModal" />
+        <ModalCadastro :isVisible="isModalVisible" @close="isModalVisible = false" :fields="currentFields"/>
       </div>
     </main>
   </template>
   
-  <script setup>
+<script setup>
   import { ref, computed } from 'vue';
   import TableComponent from '../components/Table.vue';
   import SearchBar from '../components/Searchbar.vue';
   import AddButton from '../components/ButtonAdd.vue';
+  import ModalCadastro from '../components/ModalCadastro.vue';
   
   const tableData = ref([
-    { codigo: '1', nome: 'Jho', medida: '11.222.333-4', categoria: '11)11111-111', descricao: ' Um, 1' },
-    { codigo: '2', nome: 'Mar', medida: '231.222.444-', categoria: '(11)11111-11', descricao: 'a Um, 1' },
-    { codigo: '3', nome: 'Ana', medida: '2.222.999-44', categoria: '1)11111-1111', descricao: 'Um, 1' },
-    { codigo: '4', nome: 'Jho', medida: '11.222.333-4', categoria: '11)11111-111', descricao: ' Um, 1' },
-    { codigo: '5', nome: 'Mar', medida: '231.222.444-', categoria: '(11)11111-11', descricao: 'a Um, 1' },
-    { codigo: '6', nome: 'Ana', medida: '2.222.999-44', categoria: '1)11111-1111', descricao: 'Um, 1' },
-    { codigo: '7', nome: 'Jho', medida: '11.222.333-4', categoria: '11)11111-111', descricao: ' Um, 1' },
-    { codigo: '8', nome: 'Mar', medida: '231.222.444-', categoria: '(11)11111-11', descricao: 'a Um, 1' },
-    { codigo: '9', nome: 'Ana', medida: '2.222.999-44', categoria: '1)11111-1111', descricao: 'Um, 1' },
-    { codigo: '10', nome: 'Jh', medida: '111.222.333-', categoria: '(11)11111-11', descricao: 'a Um, 1' },
-    { codigo: '11', nome: 'Ma', medida: '231.222.444-', categoria: '11)11111-111', descricao: ' Um, 1' },
-    { codigo: '12', nome: 'An', medida: '52.222.999-4', categoria: '11)11111-111', descricao: ' Um, 1' },
-    { codigo: '13', nome: 'Jh', medida: '111.222.333-', categoria: '(11)11111-11', descricao: 'a Um, 1' },
-    { codigo: '14', nome: 'Ma', medida: '31.222.444-4', categoria: '11)11111-111', descricao: ' Um, 1' },
-    { codigo: '15', nome: 'An', medida: '52.222.999-4', categoria: '11)11111-111', descricao: ' Um, 1' }
+    { codigo: '1', nome: 'Jho', medida: '11.222.333-4', categoria: '11)11111-111', descricao: ' Um, 1', imagem: 'src/assets/prato.jpg' }
   ]);
 
  const tableColumns = [
@@ -39,6 +27,11 @@
     { label: 'Medida', key: 'medida' },
     { label: 'Categoria', key: 'categoria' },
     { label: 'Descrição', key: 'descricao' }
+  ];
+
+  const tableColumnsWithImage = [
+    { label: '', key: 'imagem', type: 'image' }, 
+    ...tableColumns
   ];
   
   const searchTerm = ref('');
@@ -57,12 +50,24 @@
     );
   });
   
-  const handleAdd = () => {
-    // Implement the logic for adding a new entry
+  const isModalVisible = ref(false);
+  const currentFields = ref([]);
+
+  const contactFields = [
+    { name: 'name', label: 'Nome do Prato*', type: 'text', required: true, width: '100%' },
+    { name: 'descricao', label: 'Descrição', type: 'text', required: false, width: '100%' },
+    { name: 'categoria', label: 'Categoria*', type: 'combobox', required: true, width: '40%', options: ['Male', 'Female', 'Other'] },
+    { name: 'medida', label: 'Unidade de Medida*', type: 'combobox', required: true, width: '40%', options: ['Male', 'Female', 'Other'] },
+    { name: 'imagem', label: 'Imagem', type: 'file', required: true, width: '100%' }
+  ];
+
+  const showModal = () => {
+    currentFields.value = contactFields;
+    isModalVisible.value = true;
   };
-  </script>
+</script>
   
-  <style lang="scss" scoped>
+<style lang="scss" scoped>
   h1 {
     font-size: 1.5rem;
     color: #940000;
@@ -70,7 +75,7 @@
   
   .add-section {
     display: flex;
-    margin-top: 1rem;
+    margin-top: .1rem;
   }
-  </style>
+</style>
   

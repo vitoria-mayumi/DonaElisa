@@ -44,7 +44,7 @@ const onSearch = (event) => {
   }
 }
 .search-bar {
-  margin: 2rem 0 2rem 0;
+  margin: 1.5rem 0 1.5rem 0;
   padding: 0.5rem 2rem 0.5rem 2rem;
   width: 100%;
   max-width: 400px;
