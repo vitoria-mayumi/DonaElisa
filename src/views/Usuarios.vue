@@ -18,12 +18,13 @@
   import ModalCadastro from '../components/ModalCadastro.vue';
   
   const tableData = ref([
-    { codigo: '1', nome: 'Jho', tipo: '(11)11111-1111' }
+    { codigo: '1', usuario: 'Paula', tipo: 'Padrão' },
+    { codigo: '2', usuario: 'João', tipo: 'Administrador' }
   ]);
   
   const tableColumns = [
     { label: 'Código', key: 'codigo' },
-    { label: 'Nome', key: 'nome' },
+    { label: 'Usuário', key: 'usuario' },
     { label: 'Tipo', key: 'tipo' }
   ];
   
@@ -36,7 +37,7 @@
   const filteredData = computed(() => {
     return tableData.value.filter((item) =>
         item.codigo.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
-        item.nome.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
+        item.usuario.toLowerCase().includes(searchTerm.value.toLowerCase()) ||
         item.tipo.toLowerCase().includes(searchTerm.value.toLowerCase()) 
     );
   });
@@ -48,7 +49,7 @@
     { name: 'usuario', label: 'Usuário*', type: 'text', required: true, width: '100%', placeholder: '' },
     { name: 'senha', label: 'Senha*', type: 'text', required: true, width: '100%', placeholder: '' },
     { name: 'confirmar_senha', label: 'Confirmar Senha*', type: 'text', required: true, width: '100%', placeholder: '' },
-    { name: 'tipo', label: 'Tipo do Usuário*', type: 'combobox', required: true, width: '30%', options: ['Male', 'Female', 'Other'] }
+    { name: 'tipo', label: 'Tipo do Usuário*', type: 'combobox', required: true, width: '30%', options: ['Administrador', 'Padrão'] }
   ];
   
   const showModal = () => {

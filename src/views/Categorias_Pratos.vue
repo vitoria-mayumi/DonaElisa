@@ -18,8 +18,8 @@
   import ModalCadastro from '../components/ModalCadastro.vue';
   
   const tableData = ref([
-    { codigo: '1', nome: 'Jho', descricao: ' Um, 1' },
-    { codigo: '2', nome: 'Mar', descricao: 'a Um, 1' }
+    { codigo: '1', nome: 'Especial Natal', descricao: 'Pratos para o Natal' },
+    { codigo: '2', nome: 'Fritos', descricao: 'Pratos Fritos' }
   ]);
 
  const tableColumns = [
