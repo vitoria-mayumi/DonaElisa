@@ -1,7 +1,10 @@
-# Vue 3 + Vite
+**Sistema de Gerenciamento de Pedido Dona Elisa**
+Aplicação Web, com interface de projeto desenvolvida em JavaScrpit com Framework Vue. Contendo componentes de tabela, SideBar, pesquisa, botão e modal. 
 
-This template should help get you started developing with Vue 3 in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+para saber mais, acesse o site oficial da Rotisseire Dona Elisa:    
+[text](https://donaelisa.com.br/)
 
-## Recommended IDE Setup
+**Justificativa de projeto**
+O projeto consiste no desenvolvimento e implementação de um novo sistema de encomendas para a rotisserie Dona Elisa. O objetivo principal é aprimorar e facilitar o sistema de encomendas de produto, proporcionando uma plataforma mais intuitiva, informativa e interativa para os usuários. 
 
-- [VS Code](https://code.visualstudio.com/) + [Vue - Official](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (previously Volar) and disable Vetur
+Considerando a importância crescente da presença digital, a criação de um sistema de controle de encomendas inova e introduz a rotisserie na era digital, assim faz que abdiquem do meio manual que aplicavam para automação digital, melhorar a transparência nas informações e oferecer uma experiência online mais envolvente para os usuários. 
