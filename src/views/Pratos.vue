@@ -18,7 +18,7 @@
   import ModalCadastro from '../components/ModalCadastro.vue';
   
   const tableData = ref([
-    { codigo: '1', nome: 'Jho', medida: '11.222.333-4', categoria: '11)11111-111', descricao: ' Um, 1', imagem: 'src/assets/prato.jpg' }
+    { codigo: '1', nome: 'Chester', medida: 'Kg', categoria: 'Especial Natal', descricao: 'Chester ao molho de laranja', imagem: 'src/assets/prato.jpg' }
   ]);
 
  const tableColumns = [
@@ -56,8 +56,8 @@
   const contactFields = [
     { name: 'name', label: 'Nome do Prato*', type: 'text', required: true, width: '100%' },
     { name: 'descricao', label: 'Descrição', type: 'text', required: false, width: '100%' },
-    { name: 'categoria', label: 'Categoria*', type: 'combobox', required: true, width: '40%', options: ['Male', 'Female', 'Other'] },
-    { name: 'medida', label: 'Unidade de Medida*', type: 'combobox', required: true, width: '40%', options: ['Male', 'Female', 'Other'] },
+    { name: 'categoria', label: 'Categoria*', type: 'combobox', required: true, width: '40%', options: ['Especial Natal', 'Fritos'] },
+    { name: 'medida', label: 'Unidade de Medida*', type: 'combobox', required: true, width: '40%', options: ['Quilograma(kg)', 'Grama(g)', 'Litro(l)', 'Mililitro(ml)', 'Unidade(un)'] },
     { name: 'imagem', label: 'Imagem', type: 'file', required: true, width: '100%' }
   ];
 
