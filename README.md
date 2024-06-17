@@ -3,7 +3,7 @@
 Aplicação Web, com interface de projeto desenvolvida em JavaScrpit com Framework Vue. Contendo componentes de tabela, SideBar, pesquisa, botão e modal. 
 
 para saber mais, acesse o site oficial da Rotisseire Dona Elisa:    
-[Link Dona Elisa](https://donaelisa.com.br/)s
+[Link Dona Elisa](https://donaelisa.com.br/)
 
 **Justificativa de projeto**
 
