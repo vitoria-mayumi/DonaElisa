@@ -58,7 +58,7 @@
         </div>
         <div class="container-btn-enviar">
           <div class="btn-enviar">
-            <button type="submit" class="btn btn-primary">
+            <button type="submit" @click="submitForm" class="btn btn-primary">
               Salvar
             </button>
           </div>
@@ -79,17 +79,25 @@ const props = defineProps({
   fields: {
     type: Array,
     required: true
+  },
+  apiEndpoint: {
+    type: String,
+    required: true,
+  },
+  rowData: { 
+    type: Object,
+    default: () => ({}),
   }
 });
 
-const emit = defineEmits(['close']);
+const emit = defineEmits(['close', 'cadastroRealizado']);
 
 const form = ref({});
 
 watch(() => props.fields, (newFields) => {
   newFields.forEach(field => {
     if (!(field.name in form.value)) {
-      form.value[field.name] = '';
+      form.value[field.name] = props.rowData[field.name] || '';
     }
   });
 }, { immediate: true });
@@ -98,9 +106,30 @@ const closeModal = () => {
   emit('close');
 };
 
-const submitForm = () => {
-  console.log('Form data:', form.value);
-  closeModal();
+const submitForm = async () => {
+  console.log(form.value)
+  try {
+    const response = await fetch(props.apiEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(form.value), 
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao cadastrar');
+    }
+
+    const result = await response.json();
+    console.log('Cadastro realizado com sucesso:', result);
+
+    emit('cadastroRealizado', result); 
+
+    closeModal(); 
+  } catch (error) {
+    console.error('Erro ao enviar o formulário:', error);
+  }
 };
 
 const applyMask = (fieldName, event) => {
@@ -113,7 +142,7 @@ const applyMask = (fieldName, event) => {
         value = value.slice(0, 5) + '-' + value.slice(5);
       }
       break;
-    case 'cpf':
+    case 'CPF':
       value = value.replace(/\D/g, '').slice(0, 11);
       if (value.length > 9) {
         value = value.slice(0, 3) + '.' + value.slice(3, 6) + '.' + value.slice(6, 9) + '-' + value.slice(9, 11);

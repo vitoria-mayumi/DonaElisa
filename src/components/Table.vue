@@ -139,6 +139,8 @@ const handleDeleteAction = () => {
   deleteSelectedRows();
 };
 
+const emit = defineEmits(['editRow', 'deleteRow']);
+
 const handleEditAction = () => {
   if (!hasSelectedRows.value) {
     notificationMessage.value = 'Nenhuma linha selecionada. Selecione uma linha para editar.';
@@ -148,7 +150,7 @@ const handleEditAction = () => {
     }, 5000); 
     return;
   }
-  editSelectedRows();
+  emit('editRow', selectedRows.value[0]); 
 };
 
 const dismissNotification = () => {
